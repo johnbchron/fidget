@@ -102,6 +102,8 @@ impl Engine {
         register_unary_fns!("sqrt", sqrt, engine);
         register_unary_fns!("square", square, engine);
         register_unary_fns!("-", neg, engine);
+        register_unary_fns!("sin", sin, engine);
+        register_unary_fns!("cos", cos, engine);
 
         engine.set_fast_operators(false);
 
@@ -313,6 +315,8 @@ define_binary_fns!(max);
 define_unary_fns!(sqrt);
 define_unary_fns!(square);
 define_unary_fns!(neg);
+define_unary_fns!(sin);
+define_unary_fns!(cos);
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -269,6 +269,8 @@ impl RegisterAllocator {
             SsaOp::SqrtReg(out, arg) => (out, arg, Op::SqrtReg),
             SsaOp::SquareReg(out, arg) => (out, arg, Op::SquareReg),
             SsaOp::CopyReg(out, arg) => (out, arg, Op::CopyReg),
+            SsaOp::SineReg(out, arg) => (out, arg, Op::SineReg),
+            SsaOp::CosineReg(out, arg) => (out, arg, Op::CosineReg),
             _ => panic!("Bad opcode: {op:?}"),
         };
         self.op_reg_fn(out, arg, op);
@@ -286,7 +288,9 @@ impl RegisterAllocator {
             | SsaOp::RecipReg(..)
             | SsaOp::SqrtReg(..)
             | SsaOp::SquareReg(..)
-            | SsaOp::CopyReg(..) => self.op_reg(op),
+            | SsaOp::CopyReg(..)
+            | SsaOp::SineReg(..)
+            | SsaOp::CosineReg(..) => self.op_reg(op),
 
             SsaOp::AddRegImm(..)
             | SsaOp::SubRegImm(..)

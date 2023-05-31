@@ -355,6 +355,19 @@ impl Context {
         let a = a.into_node(self)?;
         self.op_unary(a, UnaryOpcode::Neg)
     }
+    
+    /// Builds a sine node
+    pub fn sin<A: IntoNode>(&mut self, a: A) -> Result<Node, Error> {
+        let a = a.into_node(self)?;
+        self.op_unary(a, UnaryOpcode::Sin)
+    }
+    
+    /// Builds a cosine node
+    pub fn cos<A: IntoNode>(&mut self, a: A) -> Result<Node, Error> {
+        let a = a.into_node(self)?;
+        self.op_unary(a, UnaryOpcode::Cos)
+    }
+    
 
     /// Builds a reciprocal node
     /// ```
@@ -658,6 +671,8 @@ impl Context {
                     UnaryOpcode::Recip => 1.0 / a,
                     UnaryOpcode::Sqrt => a.sqrt(),
                     UnaryOpcode::Square => a * a,
+                    UnaryOpcode::Sin => a.sin(),
+                    UnaryOpcode::Cos => a.cos(),
                 }
             }
         };
@@ -715,6 +730,8 @@ impl Context {
                 "neg" => ctx.neg(pop()?)?,
                 "sqrt" => ctx.sqrt(pop()?)?,
                 "square" => ctx.square(pop()?)?,
+                "sin" => ctx.sin(pop()?)?,
+                "cos" => ctx.cos(pop()?)?,
                 "add" => ctx.add(pop()?, pop()?)?,
                 "mul" => ctx.mul(pop()?, pop()?)?,
                 "min" => ctx.min(pop()?, pop()?)?,
@@ -771,6 +788,8 @@ impl Context {
                 UnaryOpcode::Recip => out += "recip",
                 UnaryOpcode::Sqrt => out += "sqrt",
                 UnaryOpcode::Square => out += "square",
+                UnaryOpcode::Sin => out += "sin",
+                UnaryOpcode::Cos => out += "cos",
             },
         };
         write!(

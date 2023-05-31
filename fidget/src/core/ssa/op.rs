@@ -46,6 +46,11 @@ pub enum Op {
     DivRegReg(u32, u32, u32),
     /// Subtracts two registers
     SubRegReg(u32, u32, u32),
+    
+    /// Compute the sine of a register
+    SineReg(u32, u32),
+    /// Compute the cosine of a register
+    CosineReg(u32, u32),
 
     /// Compute the minimum of a register and an immediate
     MinRegImm(u32, u32, f32),
@@ -80,6 +85,10 @@ impl Op {
             | Op::MulRegReg(out, ..)
             | Op::DivRegReg(out, ..)
             | Op::SubRegReg(out, ..)
+            
+            | Op::SineReg(out, ..)
+            | Op::CosineReg(out, ..)
+            
             | Op::MinRegImm(out, ..)
             | Op::MaxRegImm(out, ..)
             | Op::MinRegReg(out, ..)
@@ -109,7 +118,10 @@ impl Op {
             | Op::SubRegReg(..)
             | Op::DivRegReg(..)
             | Op::DivRegImm(..)
-            | Op::DivImmReg(..) => 0,
+            | Op::DivImmReg(..)
+            
+            | Op::SineReg(..)
+            | Op::CosineReg(..) => 0,
             Op::MinRegImm(..)
             | Op::MaxRegImm(..)
             | Op::MinRegReg(..)

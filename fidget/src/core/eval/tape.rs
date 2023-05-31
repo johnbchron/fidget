@@ -251,7 +251,9 @@ impl Data {
                 | SsaOp::AbsReg(index, arg)
                 | SsaOp::RecipReg(index, arg)
                 | SsaOp::SqrtReg(index, arg)
-                | SsaOp::SquareReg(index, arg) => {
+                | SsaOp::SquareReg(index, arg)
+                | SsaOp::SineReg(index, arg)
+                | SsaOp::CosineReg(index, arg) => {
                     *index = new_index;
                     *arg = workspace.get_or_insert_active(*arg);
                 }

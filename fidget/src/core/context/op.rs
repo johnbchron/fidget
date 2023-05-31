@@ -10,6 +10,8 @@ pub enum UnaryOpcode {
     Recip,
     Sqrt,
     Square,
+    Sin,
+    Cos,
 }
 
 /// A two-argument math operation

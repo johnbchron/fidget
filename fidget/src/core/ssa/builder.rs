@@ -163,6 +163,8 @@ impl Builder {
                     UnaryOpcode::Recip => SsaOp::RecipReg,
                     UnaryOpcode::Sqrt => SsaOp::SqrtReg,
                     UnaryOpcode::Square => SsaOp::SquareReg,
+                    UnaryOpcode::Sin => SsaOp::SineReg,
+                    UnaryOpcode::Cos => SsaOp::CosineReg,
                 };
                 Some(op(index, lhs))
             }

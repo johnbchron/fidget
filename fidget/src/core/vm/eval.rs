@@ -169,6 +169,12 @@ impl TracingEvaluator<Interval, Eval> for AsmEval {
                 Op::SubRegImm(out, arg, imm) => {
                     v[out] = v[arg] - imm.into();
                 }
+                Op::SineReg(out, arg) => {
+                    v[out] = v[arg].sine();
+                }
+                Op::CosineReg(out, arg) => {
+                    v[out] = v[arg].cosine();
+                }
                 Op::MinRegImm(out, arg, imm) => {
                     let (value, choice) = v[arg].min_choice(imm.into());
                     v[out] = value;
@@ -279,6 +285,12 @@ impl TracingEvaluator<f32, Eval> for AsmEval {
                 }
                 Op::SubRegImm(out, arg, imm) => {
                     v[out] = v[arg] - imm;
+                }
+                Op::SineReg(out, arg) => {
+                    v[out] = v[arg].sin();
+                }
+                Op::CosineReg(out, arg) => {
+                    v[out] = v[arg].cos();
                 }
                 Op::MinRegImm(out, arg, imm) => {
                     let a = v[arg];
@@ -514,6 +526,16 @@ impl BulkEvaluator<f32, Eval> for AsmEval {
                         v[out][i] = v[arg][i] - imm;
                     }
                 }
+                Op::SineReg(out, arg) => {
+                    for i in 0..size {
+                        v[out][i] = v[arg][i].sin();
+                    }
+                }
+                Op::CosineReg(out, arg) => {
+                    for i in 0..size {
+                        v[out][i] = v[arg][i].cos();
+                    }
+                }
                 Op::MinRegImm(out, arg, imm) => {
                     for i in 0..size {
                         v[out][i] = v[arg][i].min(imm);
@@ -683,6 +705,16 @@ impl BulkEvaluator<Grad, Eval> for AsmEval {
                     let imm: Grad = imm.into();
                     for i in 0..size {
                         v[out][i] = v[arg][i] - imm;
+                    }
+                }
+                Op::SineReg(out, arg) => {
+                    for i in 0..size {
+                        v[out][i] = v[arg][i].sin();
+                    }
+                }
+                Op::CosineReg(out, arg) => {
+                    for i in 0..size {
+                        v[out][i] = v[arg][i].cos();
                     }
                 }
                 Op::MinRegImm(out, arg, imm) => {

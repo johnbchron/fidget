@@ -30,7 +30,7 @@ use dynasmrt::{
     components::PatchLoc, dynasm, AssemblyOffset, DynamicLabel, DynasmApi,
     DynasmError, DynasmLabelApi, TargetKind,
 };
-use std::sync::Arc;
+use std::{sync::Arc, todo};
 
 mod mmap;
 
@@ -657,6 +657,12 @@ fn build_asm_fn_with_storage<A: AssemblerT>(t: &TapeData, s: Mmap) -> Mmap {
             }
             Op::SubRegImm(out, arg, imm) => {
                 asm.build_sub_reg_imm(out, arg, imm);
+            }
+            Op::SineReg(..) => {
+                todo!();
+            }
+            Op::CosineReg(..) => {
+                todo!();
             }
             Op::MinRegImm(out, arg, imm) => {
                 let reg = asm.load_imm(imm);

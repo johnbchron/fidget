@@ -71,6 +71,28 @@ impl Grad {
             dz: self.dz / v2,
         }
     }
+    /// Sine
+    pub fn sin(self) -> Self {
+        let v = self.v.sin();
+        let cos = self.v.cos();
+        Grad {
+            v,
+            dx: self.dx * cos,
+            dy: self.dy * cos,
+            dz: self.dz * cos,
+        }
+    }
+    /// Cosine
+    pub fn cos(self) -> Self {
+        let v = self.v.cos();
+        let sin = self.v.sin();
+        Grad {
+            v,
+            dx: -self.dx * sin,
+            dy: -self.dy * sin,
+            dz: -self.dz * sin,
+        }
+    }
 
     /// Minimum of two values
     pub fn min(self, rhs: Self) -> Self {
@@ -280,6 +302,24 @@ impl Interval {
             std::f32::NAN.into()
         }
     }
+    
+    /// Calculates the sine of the interval
+    pub fn sine(self) -> Self {
+        if self.has_nan() {
+            return std::f32::NAN.into();
+        }
+        // give up because this math is too hard for me :(
+        Interval::new(-1.0, 1.0)
+    }
+    /// Calculates the cosine of the interval
+    pub fn cosine(self) -> Self {
+        if self.has_nan() {
+            return std::f32::NAN.into();
+        }
+        // give up because this math is too hard for me :(
+        Interval::new(-1.0, 1.0)
+    }
+    
     /// Calculates the minimum of two intervals
     ///
     /// Returns both the result and a [`Choice`] indicating whether one side is

@@ -58,6 +58,12 @@ pub enum Op {
     DivRegReg(u8, u8, u8),
     /// Subtract one register from another
     SubRegReg(u8, u8, u8),
+    
+    /// Compute the sine of a register
+    SineReg(u8, u8),
+    /// Compute the cosine of a register
+    CosineReg(u8, u8),
+    
     /// Take the minimum of two registers
     MinRegReg(u8, u8, u8),
     /// Take the maximum of two registers
