@@ -99,6 +99,7 @@ impl Engine {
         register_binary_fns!("/", div, engine);
         register_binary_fns!("min", min, engine);
         register_binary_fns!("max", max, engine);
+        register_unary_fns!("abs", abs, engine);
         register_unary_fns!("sqrt", sqrt, engine);
         register_unary_fns!("square", square, engine);
         register_unary_fns!("-", neg, engine);
@@ -312,6 +313,7 @@ define_binary_fns!(mul);
 define_binary_fns!(div);
 define_binary_fns!(min);
 define_binary_fns!(max);
+define_unary_fns!(abs);
 define_unary_fns!(sqrt);
 define_unary_fns!(square);
 define_unary_fns!(neg);
