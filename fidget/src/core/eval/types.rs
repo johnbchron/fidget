@@ -1,6 +1,8 @@
 //! Custom types used during evaluation
 use crate::eval::Choice;
 
+use std::f32::consts::PI;
+
 /// A point in space with associated partial derivatives.
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
 #[repr(C)]
@@ -308,16 +310,57 @@ impl Interval {
         if self.has_nan() {
             return std::f32::NAN.into();
         }
-        // give up because this math is too hard for me :(
-        Interval::new(-1.0, 1.0)
+
+        let lower = self.lower();
+        let upper = self.upper();
+
+        let two_pi = 2.0 * std::f32::consts::PI;
+        let half_pi = std::f32::consts::PI / 2.0;
+
+        // Normalize the interval to [0, 2π)
+        let lower_norm = lower.rem_euclid(two_pi);
+        let upper_norm = ((upper - lower) + lower_norm).rem_euclid(two_pi);
+
+        // Check if the input interval covers more than a half period
+        if upper_norm - lower_norm >= two_pi || upper_norm - lower_norm >= half_pi && ((lower_norm <= half_pi && upper_norm >= half_pi) || (lower_norm <= 1.5 * PI && upper_norm >= 1.5 * PI)) {
+            return Interval::new(-1.0, 1.0);
+        }
+        
+        // If the input interval doesn't cover a complete half period
+        let sin_lower = lower.sin();
+        let sin_upper = upper.sin();
+        return Interval::new(sin_lower.min(sin_upper), sin_lower.max(sin_upper));
     }
+    
     /// Calculates the cosine of the interval
     pub fn cosine(self) -> Self {
         if self.has_nan() {
             return std::f32::NAN.into();
         }
-        // give up because this math is too hard for me :(
-        Interval::new(-1.0, 1.0)
+
+        let lower = self.lower();
+        let upper = self.upper();
+        
+        let two_pi = 2.0 * std::f32::consts::PI;
+        let half_pi = std::f32::consts::PI / 2.0;
+
+        // Shift the input interval by π/2
+        let lower_shifted = lower + half_pi;
+        let upper_shifted = upper + half_pi;
+
+        // Normalize the shifted interval to [0, 2π)
+        let lower_norm = lower_shifted.rem_euclid(two_pi);
+        let upper_norm = ((upper_shifted - lower_shifted) + lower_norm).rem_euclid(two_pi);
+
+        // Check if the shifted input interval covers more than a half period
+        if upper_norm - lower_norm >= two_pi || upper_norm - lower_norm >= half_pi && ((lower_norm <= half_pi && upper_norm >= half_pi) || (lower_norm <= 1.5 * PI && upper_norm >= 1.5 * PI)) {
+            return Interval::new(-1.0, 1.0);
+        }
+        
+        // If the shifted input interval doesn't cover a complete half period
+        let cos_lower = lower.cos();
+        let cos_upper = upper.cos();
+        return Interval::new(cos_lower.min(cos_upper), cos_lower.max(cos_upper));
     }
     
     /// Calculates the minimum of two intervals
