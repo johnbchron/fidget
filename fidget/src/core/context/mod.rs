@@ -28,7 +28,7 @@ define_index!(VarNode, "An index in the `Context::vars` map");
 ///
 /// It should be used like an arena allocator: it grows over time, then frees
 /// all of its contents when dropped.
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Context {
     ops: IndexMap<Op, Node>,
     vars: IndexMap<String, VarNode>,
