@@ -252,6 +252,7 @@ impl Data {
                 | SsaOp::RecipReg(index, arg)
                 | SsaOp::SqrtReg(index, arg)
                 | SsaOp::SquareReg(index, arg)
+                | SsaOp::ExpReg(index, arg)
                 | SsaOp::SineReg(index, arg)
                 | SsaOp::CosineReg(index, arg) => {
                     *index = new_index;

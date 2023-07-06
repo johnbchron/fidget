@@ -149,6 +149,9 @@ impl TracingEvaluator<Interval, Eval> for AsmEval {
                 Op::SquareReg(out, arg) => {
                     v[out] = v[arg].square();
                 }
+                Op::ExpReg(out, arg) => {
+                    v[out] = v[arg].exp();
+                }
                 Op::CopyReg(out, arg) => v[out] = v[arg],
                 Op::AddRegImm(out, arg, imm) => {
                     v[out] = v[arg] + imm.into();
@@ -264,6 +267,9 @@ impl TracingEvaluator<f32, Eval> for AsmEval {
                 Op::SquareReg(out, arg) => {
                     let s = v[arg];
                     v[out] = s * s;
+                }
+                Op::ExpReg(out, arg) => {
+                    v[out] = v[arg].exp();
                 }
                 Op::CopyReg(out, arg) => {
                     v[out] = v[arg];
@@ -491,6 +497,11 @@ impl BulkEvaluator<f32, Eval> for AsmEval {
                         v[out][i] = s * s;
                     }
                 }
+                Op::ExpReg(out, arg) => {
+                    for i in 0..size {
+                        v[out][i] = v[arg][i].exp();
+                    }
+                }
                 Op::CopyReg(out, arg) => {
                     for i in 0..size {
                         v[out][i] = v[arg][i];
@@ -672,6 +683,11 @@ impl BulkEvaluator<Grad, Eval> for AsmEval {
                 Op::CopyReg(out, arg) => {
                     for i in 0..size {
                         v[out][i] = v[arg][i];
+                    }
+                }
+                Op::ExpReg(out, arg) => {
+                    for i in 0..size {
+                        v[out][i] = v[arg][i].exp();
                     }
                 }
                 Op::AddRegImm(out, arg, imm) => {

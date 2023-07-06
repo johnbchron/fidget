@@ -80,6 +80,13 @@ where
     pub fn keys(&self) -> impl Iterator<Item = I> {
         (0..self.data.len()).map(I::new)
     }
+    pub fn size_of(&self) -> usize {
+        use std::mem::size_of;
+        size_of::<V>() * self.data.len()
+            + size_of::<I>() * self.map.len()
+            + size_of::<Vec<V>>()
+            + size_of::<HashMap<V, I>>()
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

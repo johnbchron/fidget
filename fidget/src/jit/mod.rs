@@ -620,6 +620,9 @@ fn build_asm_fn_with_storage<A: AssemblerT>(t: &TapeData, s: Mmap) -> Mmap {
             Op::SquareReg(out, arg) => {
                 asm.build_square(out, arg);
             }
+            Op::ExpReg(..) => {
+                todo!();
+            }
             Op::AddRegReg(out, lhs, rhs) => {
                 asm.build_add(out, lhs, rhs);
             }

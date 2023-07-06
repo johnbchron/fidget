@@ -356,6 +356,12 @@ impl Context {
         self.op_unary(a, UnaryOpcode::Neg)
     }
     
+    /// Builds an exponential node
+    pub fn exp<A: IntoNode>(&mut self, a: A) -> Result<Node, Error> {
+        let a = a.into_node(self)?;
+        self.op_unary(a, UnaryOpcode::Exp)
+    }
+    
     /// Builds a sine node
     pub fn sin<A: IntoNode>(&mut self, a: A) -> Result<Node, Error> {
         let a = a.into_node(self)?;
@@ -671,6 +677,7 @@ impl Context {
                     UnaryOpcode::Recip => 1.0 / a,
                     UnaryOpcode::Sqrt => a.sqrt(),
                     UnaryOpcode::Square => a * a,
+                    UnaryOpcode::Exp => a.exp(),
                     UnaryOpcode::Sin => a.sin(),
                     UnaryOpcode::Cos => a.cos(),
                 }
@@ -730,6 +737,7 @@ impl Context {
                 "neg" => ctx.neg(pop()?)?,
                 "sqrt" => ctx.sqrt(pop()?)?,
                 "square" => ctx.square(pop()?)?,
+                "exp" => ctx.exp(pop()?)?,
                 "sin" => ctx.sin(pop()?)?,
                 "cos" => ctx.cos(pop()?)?,
                 "add" => ctx.add(pop()?, pop()?)?,
@@ -747,6 +755,11 @@ impl Context {
             Some(node) => Ok((ctx, node)),
             None => Err(Error::EmptyFile),
         }
+    }
+    
+    /// Calculates the runtime size of the entire context
+    pub fn size_of(&self) -> usize {
+        self.ops.size_of() + self.vars.size_of()
     }
 
     /// Converts the entire context into a GraphViz drawing
@@ -788,6 +801,7 @@ impl Context {
                 UnaryOpcode::Recip => out += "recip",
                 UnaryOpcode::Sqrt => out += "sqrt",
                 UnaryOpcode::Square => out += "square",
+                UnaryOpcode::Exp => out += "exp",
                 UnaryOpcode::Sin => out += "sin",
                 UnaryOpcode::Cos => out += "cos",
             },

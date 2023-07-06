@@ -54,6 +54,7 @@ impl Tape {
                 | Op::SqrtReg(out, arg)
                 | Op::CopyReg(out, arg)
                 | Op::SquareReg(out, arg)
+                | Op::ExpReg(out, arg)
                 | Op::SineReg(out, arg)
                 | Op::CosineReg(out, arg) => {
                     let op = match op {
@@ -62,6 +63,7 @@ impl Tape {
                         Op::RecipReg(..) => "RECIP",
                         Op::SqrtReg(..) => "SQRT",
                         Op::SquareReg(..) => "SQUARE",
+                        Op::ExpReg(..) => "EXP",
                         Op::CopyReg(..) => "COPY",
                         Op::SineReg(..) => "SIN",
                         Op::CosineReg(..) => "COS",

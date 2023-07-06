@@ -73,6 +73,18 @@ impl Grad {
             dz: self.dz / v2,
         }
     }
+    
+    /// Exponential
+    pub fn exp(self) -> Self {
+        let v = self.v.exp();
+        Grad {
+            v,
+            dx: self.dx * v,
+            dy: self.dy * v,
+            dz: self.dz * v,
+        }
+    }
+    
     /// Sine
     pub fn sin(self) -> Self {
         let v = self.v.sin();
@@ -84,6 +96,7 @@ impl Grad {
             dz: self.dz * cos,
         }
     }
+    
     /// Cosine
     pub fn cos(self) -> Self {
         let v = self.v.cos();
@@ -303,6 +316,21 @@ impl Interval {
         } else {
             std::f32::NAN.into()
         }
+    }
+    
+    /// Calculates the exponential of the interval
+    pub fn exp(self) -> Self {
+        if self.has_nan() {
+            return std::f32::NAN.into();
+        }
+
+        let lower = self.lower();
+        let upper = self.upper();
+
+        let exp_lower = lower.exp();
+        let exp_upper = upper.exp();
+
+        Interval::new(exp_lower, exp_upper)
     }
     
     /// Calculates the sine of the interval

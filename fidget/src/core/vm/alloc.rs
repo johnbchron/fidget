@@ -268,6 +268,7 @@ impl RegisterAllocator {
             SsaOp::RecipReg(out, arg) => (out, arg, Op::RecipReg),
             SsaOp::SqrtReg(out, arg) => (out, arg, Op::SqrtReg),
             SsaOp::SquareReg(out, arg) => (out, arg, Op::SquareReg),
+            SsaOp::ExpReg(out, arg) => (out, arg, Op::ExpReg),
             SsaOp::CopyReg(out, arg) => (out, arg, Op::CopyReg),
             SsaOp::SineReg(out, arg) => (out, arg, Op::SineReg),
             SsaOp::CosineReg(out, arg) => (out, arg, Op::CosineReg),
@@ -288,6 +289,7 @@ impl RegisterAllocator {
             | SsaOp::RecipReg(..)
             | SsaOp::SqrtReg(..)
             | SsaOp::SquareReg(..)
+            | SsaOp::ExpReg(..)
             | SsaOp::CopyReg(..)
             | SsaOp::SineReg(..)
             | SsaOp::CosineReg(..) => self.op_reg(op),

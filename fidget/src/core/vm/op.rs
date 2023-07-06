@@ -29,6 +29,9 @@ pub enum Op {
 
     /// Square the given register
     SquareReg(u8, u8),
+    
+    /// Take the exponential of the given register
+    ExpReg(u8, u8),
 
     /// Copies the given register
     CopyReg(u8, u8),

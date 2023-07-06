@@ -163,6 +163,7 @@ impl Builder {
                     UnaryOpcode::Recip => SsaOp::RecipReg,
                     UnaryOpcode::Sqrt => SsaOp::SqrtReg,
                     UnaryOpcode::Square => SsaOp::SquareReg,
+                    UnaryOpcode::Exp => SsaOp::ExpReg,
                     UnaryOpcode::Sin => SsaOp::SineReg,
                     UnaryOpcode::Cos => SsaOp::CosineReg,
                 };

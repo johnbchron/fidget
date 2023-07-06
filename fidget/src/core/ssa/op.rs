@@ -21,6 +21,8 @@ pub enum Op {
     SqrtReg(u32, u32),
     /// Squares a register
     SquareReg(u32, u32),
+    /// Takes the exponential of a register
+    ExpReg(u32, u32),
 
     /// Copies the given register
     CopyReg(u32, u32),
@@ -74,6 +76,7 @@ impl Op {
             | Op::RecipReg(out, ..)
             | Op::SqrtReg(out, ..)
             | Op::SquareReg(out, ..)
+            | Op::ExpReg(out, ..)
             | Op::CopyReg(out, ..)
             | Op::AddRegImm(out, ..)
             | Op::MulRegImm(out, ..)
@@ -108,6 +111,7 @@ impl Op {
             | Op::RecipReg(..)
             | Op::SqrtReg(..)
             | Op::SquareReg(..)
+            | Op::ExpReg(..)
             | Op::CopyReg(..)
             | Op::AddRegImm(..)
             | Op::MulRegImm(..)
@@ -119,7 +123,6 @@ impl Op {
             | Op::DivRegReg(..)
             | Op::DivRegImm(..)
             | Op::DivImmReg(..)
-            
             | Op::SineReg(..)
             | Op::CosineReg(..) => 0,
             Op::MinRegImm(..)
