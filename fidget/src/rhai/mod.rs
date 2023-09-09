@@ -161,6 +161,31 @@ impl Engine {
 
         Ok((out, ctx.context))
     }
+    
+    /// Same as `eval`, but does not clear the context.
+    pub fn eval_no_clear(&mut self, script: &str) -> Result<(Node, Context), Error> {
+        let mut scope = {
+            let mut ctx = self.context.lock().unwrap();
+
+            // Create initialized scope with x/y/z
+            let mut scope = rhai::Scope::new();
+            scope.push("x", ctx.context.x());
+            scope.push("y", ctx.context.y());
+            scope.push("z", ctx.context.z());
+            scope
+        };
+
+        let out = self
+            .engine
+            .eval_expression_with_scope::<Node>(&mut scope, script)
+            .map_err(|e| *e)?;
+
+        // Steal the ScriptContext's contents
+        let mut lock = self.context.lock().unwrap();
+        let ctx: ScriptContext = std::mem::take(&mut lock);
+
+        Ok((out, ctx.context))
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
