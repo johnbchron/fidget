@@ -58,7 +58,7 @@ pub struct Engine {
 
 impl Default for Engine {
     fn default() -> Self {
-        Self::new()
+        Self::new(None)
     }
 }
 
@@ -70,7 +70,7 @@ impl Engine {
     ///
     /// In addition, it includes everything in [`core.rhai`](crate::rhai::core),
     /// which is effectively our standard library.
-    pub fn new() -> Self {
+    pub fn new(ctx: Option<Context>) -> Self {
         let mut engine = rhai::Engine::new();
         engine.register_type_with_name::<Node>("Node");
         engine.register_fn("__var_x", var_x);
@@ -109,7 +109,12 @@ impl Engine {
 
         engine.set_fast_operators(false);
 
-        let context = Arc::new(Mutex::new(ScriptContext::new()));
+        let context = Arc::new(Mutex::new(
+            match ctx {
+                Some(ctx) => ScriptContext::with_context(ctx),
+                None => ScriptContext::new(),
+            },
+        ));
         engine.set_default_tag(rhai::Dynamic::from(context.clone()));
 
         let ast = engine.compile(include_str!("core.rhai")).unwrap();
@@ -192,6 +197,13 @@ impl ScriptContext {
     pub fn new() -> Self {
         Self {
             context: Context::new(),
+            shapes: vec![],
+        }
+    }
+    /// Builds a new script context with an existing context
+    pub fn with_context(context: Context) -> Self {
+        Self {
+            context,
             shapes: vec![],
         }
     }
@@ -326,7 +338,7 @@ define_unary_fns!(cos);
 
 /// One-shot evaluation of a single expression, in terms of `x, y, z`
 pub fn eval(s: &str) -> Result<(Node, Context), Error> {
-    let mut engine = Engine::new();
+    let mut engine = Engine::new(None);
     engine.eval(s)
 }
 
@@ -338,14 +350,14 @@ mod test {
 
     #[test]
     fn test_bind() {
-        let mut engine = Engine::new();
+        let mut engine = Engine::new(None);
         let out = engine.run("draw(|x, y| x + y)").unwrap();
         assert_eq!(out.shapes.len(), 1);
     }
 
     #[test]
     fn test_eval() {
-        let mut engine = Engine::new();
+        let mut engine = Engine::new(None);
         let (sum, ctx) = engine.eval("x + y").unwrap();
         assert_eq!(ctx.eval_xyz(sum, 1.0, 2.0, 0.0).unwrap(), 3.0);
     }
